@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="stock_distributors" name="Stock Distributors">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row mt-2">
+                    <center>
+                        <h3 class="text-primary">Stock de productos</h3>
+                    </center>
+                </div>
+                <form action="/distributors/stock" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-12 col-md-6 mb-2"><t t-call="website.website_search_box"/></div>
+                    </div>
+                    <br/>
+                    <div class="row row-cols-3">
+                        <div class="col-12 col-sm-6 col-md-4 mb-4 round" t-foreach="products" t-as="product">
+                            <div t-attf-class="#{'card border-primary' if product.qty_available>0 else 'card border-warning'}"  style="width: 18rem;">
+                                <img class="card-img-top" t-att-src="'/web/image/product.product/%s/image_512'%product.id"/>
+                                <div class="card-body">
+                                    <a t-att-href="product.website_url" class="btn btn-link btn-md" tabindex="-1" role="button" aria-disabled="true"><t t-esc="product.display_name"/></a>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <span t-attf-class="#{'btn btn-outline-primary' if product.qty_available>0 else 'btn btn-outline-warning'}">
+                                            En Stock: <t t-esc="product.qty_available"/>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pagination">
+                            <t t-call="website.pager">
+                                <t t-set="_classes">mt-2 ml-md-2</t>
+                            </t>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>
